@@ -108,6 +108,7 @@ namespace AzureBot.Controllers
                 var user = AzureBot.Model.User.GetOrCreate(state);
                 user.Token = obj.access_token.ToString();
                 _users.UpdateUser(user);
+
                 return "Success";
             }
             return "Something went wrong, please try again";

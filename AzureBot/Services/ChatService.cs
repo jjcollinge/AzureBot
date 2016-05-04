@@ -13,15 +13,20 @@ namespace AzureBot.Services
         public string PromptUserLogin(User user)
         {
             var loginUri = new Uri($"http://localhost:3978/api/auth/home?UserId={user.Id}");
-            return $@"Please login to your Azure account at {loginUri.ToString()}";
+            return $@"Please login to your Azure account at {loginUri.ToString()}.";
         }
 
         public string GreetUser(string username)
         {
-            return $"Hello {username}";
+            return $"Hello {username}.";
         }
 
         public string InvalidMessage()
+        {
+            return $"Sorry, your message doesn't make sense.";
+        }
+
+        public string UnsupportedIntent()
         {
             return $"Sorry, I don't understand your message.";
         }

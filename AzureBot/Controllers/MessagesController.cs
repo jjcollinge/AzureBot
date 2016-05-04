@@ -20,6 +20,7 @@ namespace AzureBot.Controllers
     {
         private const int MIN_MESSAGE_LENGTH = 1;
         private ChatService _chat;
+        private AzureService _azure;
 
         public MessagesController()
         {
@@ -28,6 +29,7 @@ namespace AzureBot.Controllers
              */
 
             _chat = new ChatService();
+            _azure = new AzureService("2015-01-01");
         }
 
         /// <summary>
@@ -81,10 +83,50 @@ namespace AzureBot.Controllers
                 else
                 {
                     // Implement all other chat logic here...
+                    string inputText = Uri.EscapeDataString(message.Text);
+
+                    IntentRoot intentRoot = await GetIntent(inputText);
+
+                    switch (intentRoot.intent)
+                    {
+                        case "GetSubscriptions":
+                            foreach (var sub in await _azure.GetSubscriptions(user.Token))
+                            {
+                                response.AppendLine(sub.Key + " : " + sub.Value);
+                            }
+                            break;
+                        default:
+                            response.AppendLine(_chat.UnsupportedIntent());
+                            break;
+                    }
                 }
             }
 
             return response.ToString();
+        }
+
+        private static async Task<IntentRoot> GetIntent(string inputText)
+        {
+            IntentRoot intent = new IntentRoot();
+
+            using (var http = new HttpClient())
+            {
+                string key = Environment.GetEnvironmentVariable("AZUREBOT_LUIS_API_KEY");
+                string id = Environment.GetEnvironmentVariable("AZUREBOT_LUIS_API_ID");
+                string uri = $"https://api.projectoxford.ai/luis/v1/application?id={id}&subscription-key={key}&q={inputText}";
+                var res = await http.GetAsync(uri);
+                res.EnsureSuccessStatusCode();
+
+                var strRes = await res.Content.ReadAsStringAsync();
+                var data = JsonConvert.DeserializeObject<dynamic>(strRes);
+
+                // Get top intent
+                intent.intent = data.intents[0].intent;
+                intent.score = data.intents[0].score;
+                intent.actions = data.intents[0].actions;
+            }
+
+            return intent;
         }
 
         private static bool ValidateMessage(Message message)

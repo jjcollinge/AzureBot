@@ -116,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Model\Intent.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Services\AzureService.cs" />
     <Compile Include="Controllers\AuthController.cs" />
