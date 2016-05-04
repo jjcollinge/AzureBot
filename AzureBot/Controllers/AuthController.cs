@@ -12,7 +12,7 @@ namespace AzureBot.Controllers
     public class AuthController : ApiController
     {
         private UserRegistry _users;
-        private static string _redirectUri = "http://localhost:3978/api/auth/receivetoken";
+        private static string _redirectUri;
         private readonly string _clientId;
         private readonly string _clientSecret;
         private readonly string _tenantId;
@@ -25,6 +25,8 @@ namespace AzureBot.Controllers
 
             // App settings
             _tenantId = ConfigurationManager.AppSettings["TenantId"];
+            var baseUri = ConfigurationManager.AppSettings["RedirectBaseUri"];
+            _redirectUri = baseUri + "/api/auth/receivetoken";
 
             _users = UserRegistry.GetSingleton();
         }
