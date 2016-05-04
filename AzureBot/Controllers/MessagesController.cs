@@ -21,9 +21,13 @@ namespace AzureBot.Controllers
         private const int MIN_MESSAGE_LENGTH = 1;
         private ChatService _chat;
 
-        public MessagesController(ChatService chat)
+        public MessagesController()
         {
-            _chat = chat;
+            /*
+             * Ctor must remain parameterless for BotFramework
+             */
+
+            _chat = new ChatService();
         }
 
         /// <summary>
