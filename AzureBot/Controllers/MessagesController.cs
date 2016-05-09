@@ -28,6 +28,7 @@ namespace AzureBot.Controllers
              * Ctor must remain parameterless for BotFramework
              */
 
+            //TODO: Config driven
             _chat = new ChatService(new System.Globalization.CultureInfo("en-GB"));
             _azure = new AzureService("2015-01-01");
         }
@@ -52,11 +53,8 @@ namespace AzureBot.Controllers
                 if(string.IsNullOrEmpty(user.Name))
                     user.Name = message.From.Name;
 
-                // Hand the message of for processing
-                var response = await HandleUserMessage(message, user);
-
                 // Return the response
-                return message.CreateReplyMessage(response);
+                return message.CreateReplyMessage(await HandleUserMessage(message, user));
             }
             else
             {
@@ -149,7 +147,15 @@ namespace AzureBot.Controllers
 
         private static bool ValidateMessage(Message message)
         {
-            return true;
+            // Ensure message of adequate length
+            if(message.Text.Length > MIN_MESSAGE_LENGTH)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private Message HandleSystemMessage(Message message)
