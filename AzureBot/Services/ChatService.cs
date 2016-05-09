@@ -19,7 +19,9 @@ namespace AzureBot.Services
         public string PromptUserLogin(User user)
         {
             var loginUri = new Uri($"http://localhost:3978/api/auth/home?UserId={user.Id}");
-            return String.Format(_culture, "{0}, Please login to your Azure account at {1}.", GreetUser(user.Name),loginUri.ToString());
+            var greeting = GreetUser(user.Name);
+            greeting = greeting.TrimEnd('.'); // Trim the trailing period
+            return String.Format(_culture, "{0}, Please login to your Azure account at {1}.", greeting, loginUri.ToString());
         }
 
         public string NoIdProvided()

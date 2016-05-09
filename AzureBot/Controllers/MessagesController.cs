@@ -12,6 +12,7 @@ using System.Text;
 using System.Security;
 using AzureBot.Model;
 using AzureBot.Services;
+using System.Globalization;
 
 namespace AzureBot.Controllers
 {
@@ -19,7 +20,6 @@ namespace AzureBot.Controllers
     public class MessagesController : ApiController
     {
         private const int MIN_MESSAGE_LENGTH = 1;
-        private ChatService _chat;
         private AzureService _azure;
 
         public MessagesController()
@@ -29,7 +29,6 @@ namespace AzureBot.Controllers
              */
 
             //TODO: Config driven
-            _chat = new ChatService(new System.Globalization.CultureInfo("en-GB"));
             _azure = new AzureService("2015-01-01");
         }
 
@@ -39,13 +38,17 @@ namespace AzureBot.Controllers
         /// </summary>
         public async Task<Message> Post([FromBody]Message message)
         {
+            // Initialise a chat service to match the input 
+            var culture = new CultureInfo(message.Language);
+            var chat = new ChatService(culture);
+
             if (message.Type == "Message")
             {
                 var id = message?.From?.Id;
                 
                 // Check message has sender Id
                 if (string.IsNullOrEmpty(id))
-                    return message.CreateReplyMessage(_chat.NoIdProvided());
+                    return message.CreateReplyMessage(chat.NoIdProvided());
 
                 User user = AzureBot.Model.User.GetOrCreate(id);
 
@@ -54,7 +57,7 @@ namespace AzureBot.Controllers
                     user.Name = message.From.Name;
 
                 // Return the response
-                return message.CreateReplyMessage(await HandleUserMessage(message, user));
+                return message.CreateReplyMessage(await HandleUserMessage(chat, message, user));
             }
             else
             {
@@ -62,21 +65,21 @@ namespace AzureBot.Controllers
             }
         }
 
-        private async Task<string> HandleUserMessage(Message message, User user)
+        private async Task<string> HandleUserMessage(ChatService chat, Message message, User user)
         {
             StringBuilder response = new StringBuilder();
 
             // Check if user has logged into Azure
             if (String.IsNullOrEmpty(user.Token))
             {
-                response.AppendLine(_chat.PromptUserLogin(user));
+                response.AppendLine(chat.PromptUserLogin(user));
             }
             else
             {
                 // User is logged in...
                 if (!ValidateMessage(message))
                 {
-                    response.AppendLine(_chat.InvalidMessage());
+                    response.AppendLine(chat.InvalidMessage());
                 }
                 else
                 {
@@ -112,7 +115,7 @@ namespace AzureBot.Controllers
                             }
                             break;
                         default:
-                            response.AppendLine(_chat.UnsupportedIntent());
+                            response.AppendLine(chat.UnsupportedIntent());
                             break;
                     }
                 }
