@@ -8,6 +8,8 @@ namespace AzureBot
 {
     internal class UserRegistry
     {
+        //TODO: Change this to the repository pattern and persist
+
         static private UserRegistry _instance;
         private IDictionary<string, User> _users;
 
