@@ -28,7 +28,7 @@ namespace AzureBot.Controllers
              * Ctor must remain parameterless for BotFramework
              */
 
-            _chat = new ChatService();
+            _chat = new ChatService(new System.Globalization.CultureInfo("en-GB"));
             _azure = new AzureService("2015-01-01");
         }
 
@@ -44,7 +44,7 @@ namespace AzureBot.Controllers
                 
                 // Check message has sender Id
                 if (string.IsNullOrEmpty(id))
-                    return message.CreateReplyMessage("Sorry, you haven't provided an ID. Please restart the conversation.");
+                    return message.CreateReplyMessage(_chat.NoIdProvided());
 
                 User user = AzureBot.Model.User.GetOrCreate(id);
 
@@ -53,7 +53,7 @@ namespace AzureBot.Controllers
                     user.Name = message.From.Name;
 
                 // Hand the message of for processing
-                var response = await ProcessMessage(message, user);
+                var response = await HandleUserMessage(message, user);
 
                 // Return the response
                 return message.CreateReplyMessage(response);
@@ -64,7 +64,7 @@ namespace AzureBot.Controllers
             }
         }
 
-        private async Task<string> ProcessMessage(Message message, User user)
+        private async Task<string> HandleUserMessage(Message message, User user)
         {
             StringBuilder response = new StringBuilder();
 
@@ -92,7 +92,25 @@ namespace AzureBot.Controllers
                         case "GetSubscriptions":
                             foreach (var sub in await _azure.GetSubscriptions(user.Token))
                             {
-                                response.AppendLine(sub.Key + " : " + sub.Value);
+                                response.AppendLine($"**{sub.Key}:**  + {sub.Value}");
+                                response.AppendLine("               ");
+                            }
+                            break;
+                        case "GetResources":
+                            foreach (var res in await _azure.GetResources(user.Token))
+                            {
+                                response.AppendLine($"**Name:** {res.Name}");
+                                response.AppendLine("               ");
+                                response.AppendLine($"**ResourceId:** {res.Id}");
+                                response.AppendLine("               ");
+                                response.AppendLine($"**ResourceType:** {res.Type}");
+                                response.AppendLine("               ");
+                                response.AppendLine($"**Location:** {res.Location}");
+                                response.AppendLine("               ");
+                                response.AppendLine($"**SubscriptionId:** {res.SubscriptionId}");
+                                response.AppendLine("               ");
+                                response.AppendLine("-_-_-_-_-_");
+                                response.AppendLine("               ");
                             }
                             break;
                         default:
@@ -105,7 +123,7 @@ namespace AzureBot.Controllers
             return response.ToString();
         }
 
-        private static async Task<IntentRoot> GetIntent(string inputText)
+        private async Task<IntentRoot> GetIntent(string inputText)
         {
             IntentRoot intent = new IntentRoot();
 
