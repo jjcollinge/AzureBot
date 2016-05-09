@@ -65,16 +65,32 @@ namespace AzureBot
 
         public async Task<List<Resource>> GetResources(string token)
         {
+            var uriExtension = "resources";
+            var resources = await GetResources(uriExtension, token);
+            return resources;
+        }
+
+        public async Task<List<Resource>> GetResourceGroups(string token)
+        {
+            var uriExtension = "resourcegroups";
+            var resourceGroups = await GetResources(uriExtension, token);
+            return resourceGroups;
+        }
+
+        private async Task<List<Resource>> GetResources(string uriExtension, string token)
+        {
             if (CurrentSubscriptionId == null)
             {
                 await GetSubscriptions(token);
             }
 
+            var uri = $"https://management.azure.com/subscriptions/{CurrentSubscriptionId}/{uriExtension}?&api-version={_apiVersion}";
+
+
             List<Resource> resources = new List<Resource>();
 
             using (var http = new HttpClient())
             {
-                var uri = $"https://management.azure.com/subscriptions/{CurrentSubscriptionId}/resources?&api-version={_apiVersion}";
                 http.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
 
                 var res = await http.GetAsync(uri);

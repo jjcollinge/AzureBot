@@ -45,7 +45,7 @@ namespace AzureBot.Controllers
             if (message.Type == "Message")
             {
                 var id = message?.From?.Id;
-                
+
                 // Check message has sender Id
                 if (string.IsNullOrEmpty(id))
                     return message.CreateReplyMessage(chat.NoIdProvided());
@@ -53,7 +53,7 @@ namespace AzureBot.Controllers
                 User user = AzureBot.Model.User.GetOrCreate(id);
 
                 // If user info isn't initialised, do it now
-                if(string.IsNullOrEmpty(user.Name))
+                if (string.IsNullOrEmpty(user.Name))
                     user.Name = message.From.Name;
 
                 // Return the response
@@ -114,6 +114,23 @@ namespace AzureBot.Controllers
                                 response.AppendLine("               ");
                             }
                             break;
+                        case "GetResourceGroups":
+                            foreach (var res in await _azure.GetResourceGroups(user.Token))
+                            {
+                                response.AppendLine($"**Name:** {res.Name}");
+                                response.AppendLine("               ");
+                                response.AppendLine($"**ResourceId:** {res.Id}");
+                                response.AppendLine("               ");
+                                response.AppendLine($"**ResourceType:** {res.Type}");
+                                response.AppendLine("               ");
+                                response.AppendLine($"**Location:** {res.Location}");
+                                response.AppendLine("               ");
+                                response.AppendLine($"**SubscriptionId:** {res.SubscriptionId}");
+                                response.AppendLine("               ");
+                                response.AppendLine("-_-_-_-_-_");
+                                response.AppendLine("               ");
+                            }
+                            break;
                         default:
                             response.AppendLine(chat.UnsupportedIntent());
                             break;
@@ -151,7 +168,7 @@ namespace AzureBot.Controllers
         private static bool ValidateMessage(Message message)
         {
             // Ensure message of adequate length
-            if(message.Text.Length > MIN_MESSAGE_LENGTH)
+            if (message.Text.Length > MIN_MESSAGE_LENGTH)
             {
                 return true;
             }
