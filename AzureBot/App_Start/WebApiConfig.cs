@@ -1,7 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using AzureBot.Model;
+using AzureBot.Services;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web.Http;
 
@@ -23,7 +26,14 @@ namespace AzureBot
             };
 
             // Web API configuration and services
+            /*
+             * var container = new UnityContainer();
+             * container.RegisterType<AuthService>(new HierarchicalLifetimeManager());
+             * config.DependencyResolver = new UnityResolver(container);
+            */
 
+            // Environment variables
+    
             // Web API routes
             config.MapHttpAttributeRoutes();
 
