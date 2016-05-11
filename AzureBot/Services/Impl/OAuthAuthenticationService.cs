@@ -19,8 +19,6 @@ namespace AzureBot.Services.Impl
         private string _clientSecret;
         private string _tenantId;
         private string _redirectUri;
-        private string _apiVersion;
-           
 
         public OAuthAuthenticationService()
         {
