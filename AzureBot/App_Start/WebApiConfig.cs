@@ -29,7 +29,7 @@ namespace AzureBot
             };
 
             // Web API configuration and services
-            var apiVersion = "2015-01-01"; // TODO: Get from config
+            var apiVersion = ConfigurationManager.AppSettings["AzureAPIVersion"];
 
             var container = new UnityContainer();
             container.RegisterInstance<IUserRepository>(UserRepository.GetInstance());
