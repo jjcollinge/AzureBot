@@ -29,8 +29,8 @@ namespace AzureBot
 
             // Web API configuration and services
             var container = new UnityContainer();
-            container.RegisterType<IUserRepository, UserRepository>(new HierarchicalLifetimeManager());
-            container.RegisterType<IAuthenticationService, OAuthAuthenticationService>(new HierarchicalLifetimeManager());
+            container.RegisterInstance<IUserRepository>(UserRepository.GetInstance());
+            container.RegisterType<IAuthenticationService, OAuthAuthenticationService>();
             config.DependencyResolver = new UnityResolver(container);
 
             // Environment variables

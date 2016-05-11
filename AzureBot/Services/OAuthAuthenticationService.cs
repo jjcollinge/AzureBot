@@ -53,7 +53,7 @@ namespace AzureBot.Services
                     result = await resp.Content.ReadAsStringAsync();
                 }
 
-                dynamic res = JsonConvert.DeserializeObject<string>(result);
+                dynamic res = JsonConvert.DeserializeObject<dynamic>(result);
                 token = res.access_token.ToString();
             }
 

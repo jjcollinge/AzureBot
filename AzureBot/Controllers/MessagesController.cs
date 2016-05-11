@@ -47,9 +47,7 @@ namespace AzureBot.Controllers
                     return message.CreateReplyMessage(chat.NoIdProvided());
 
                 // Get or create user
-                User user = UserRepository.GetInstance().GetById(id);
-                if (user == null)
-                    user = new Model.User(id);
+                User user = GetOrCreateUser(id);
 
                 // If user info isn't initialised, do it now
                 if (string.IsNullOrEmpty(user.Name))
@@ -62,6 +60,22 @@ namespace AzureBot.Controllers
             {
                 return HandleSystemMessage(message);
             }
+        }
+
+        private static User GetOrCreateUser(string id)
+        {
+            var users = UserRepository.GetInstance();
+            User user = users.GetById(id);
+
+            // If the user doesn't exist
+            if (user == null)
+            {
+                // Create new users
+                user = new Model.User(id);
+                users.Add(user);
+            }
+
+            return user;
         }
 
         private async Task<string> HandleUserMessage(ChatService chat, Message message, User user)
