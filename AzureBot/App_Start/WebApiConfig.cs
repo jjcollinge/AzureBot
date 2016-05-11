@@ -1,5 +1,7 @@
 ﻿using AzureBot.Model;
+using AzureBot.Repos;
 using AzureBot.Services;
+using Microsoft.Practices.Unity;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -26,14 +28,13 @@ namespace AzureBot
             };
 
             // Web API configuration and services
-            /*
-             * var container = new UnityContainer();
-             * container.RegisterType<AuthService>(new HierarchicalLifetimeManager());
-             * config.DependencyResolver = new UnityResolver(container);
-            */
+            var container = new UnityContainer();
+            container.RegisterType<IUserRepository, UserRepository>(new HierarchicalLifetimeManager());
+            container.RegisterType<IAuthenticationService, OAuthAuthenticationService>(new HierarchicalLifetimeManager());
+            config.DependencyResolver = new UnityResolver(container);
 
             // Environment variables
-    
+
             // Web API routes
             config.MapHttpAttributeRoutes();
 

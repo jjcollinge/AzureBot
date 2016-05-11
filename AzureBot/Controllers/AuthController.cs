@@ -1,4 +1,5 @@
 ﻿using AzureBot.Model;
+using AzureBot.Repos;
 using AzureBot.Services;
 using Newtonsoft.Json;
 using System;
@@ -14,30 +15,13 @@ namespace AzureBot.Controllers
 {
     public class AuthController : ApiController
     {
-        private UserRegistry _users;
-        private AuthService _authService;
+        private IAuthenticationService _authService;
+        private IUserRepository _users;
 
-        public AuthController(AuthService authService)
+        public AuthController(IUserRepository users, IAuthenticationService authService)
         {
-            // Environment variables
-            var clientId = Environment.GetEnvironmentVariable("ARM_API_CLIENTID");
-            var clientSecret = Environment.GetEnvironmentVariable("ARM_API_CLIENTSECRET");
-
-            // App settings
-            var tenantId = ConfigurationManager.AppSettings["TenantId"];
-            var baseUri = ConfigurationManager.AppSettings["RedirectBaseUri"];
-            var redirectUri = baseUri + "/api/auth/receivetoken";
-
-            var clientInfo = new ClientInfo(redirectUri,
-                                            clientId,
-                                            clientSecret,
-                                            tenantId);
-
-            // TODO: Move this into IoC container and fix dependency injection
             _authService = authService;
-            _authService.ClientInfo = clientInfo;
-
-            _users = UserRegistry.GetSingleton();
+            _users = users;
         }
 
         [Route("api/auth/home")]
@@ -45,7 +29,7 @@ namespace AzureBot.Controllers
         public HttpResponseMessage Home(string UserId)
         {
             var response = Request.CreateResponse(HttpStatusCode.Found);
-            response.Headers.Location = _authService.BuildOAuthCodeRequestUri(UserId);
+            response.Headers.Location = _authService.GetAuthenticationUri(UserId);
             return response;
         }
 
@@ -53,11 +37,18 @@ namespace AzureBot.Controllers
         [HttpGet()]
         public async Task<string> ReceiveToken(string code = null, string state = null)
         {
-            var token = await _authService.GetToken(code, state);
+            // Get the token from the authentication service
+            var token = await _authService.GetToken(new object[] {code, state});
 
-            var user = AzureBot.Model.User.GetOrCreate(state);
+            // Attempt to retrieve an existing user
+            var user = UserRepository.GetInstance().GetById(state);
+
+            // Create user if one doesn't exist
+            if (user == null)
+                user = new Model.User(state);
+
+            // Assign token
             user.Token = token;
-            _users.UpdateUser(user);
 
             return String.IsNullOrEmpty(token) ? "Failed" : "Success";
         }

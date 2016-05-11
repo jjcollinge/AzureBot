@@ -24,10 +24,6 @@ namespace AzureBot.Controllers
 
         public MessagesController()
         {
-            /*
-             * Ctor must remain parameterless for BotFramework
-             */
-
             //TODO: Config driven
             _azure = new AzureService("2015-01-01");
         }
@@ -50,7 +46,10 @@ namespace AzureBot.Controllers
                 if (string.IsNullOrEmpty(id))
                     return message.CreateReplyMessage(chat.NoIdProvided());
 
-                User user = AzureBot.Model.User.GetOrCreate(id);
+                // Get or create user
+                User user = UserRepository.GetInstance().GetById(id);
+                if (user == null)
+                    user = new Model.User(id);
 
                 // If user info isn't initialised, do it now
                 if (string.IsNullOrEmpty(user.Name))
