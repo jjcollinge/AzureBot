@@ -15,23 +15,23 @@ namespace AzureBot.Services.Impl
 {
     public class OAuthAuthenticationService : IAuthenticationService
     {
-        private ClientInfo _clientInfo;
+        private string _clientId;
+        private string _clientSecret;
+        private string _tenantId;
+        private string _redirectUri;
+        private string _apiVersion;
+           
 
         public OAuthAuthenticationService()
         {
-            // Environment variables
-            var clientId = Environment.GetEnvironmentVariable("ARM_API_CLIENTID");
-            var clientSecret = Environment.GetEnvironmentVariable("ARM_API_CLIENTSECRET");
+            // Environment vars
+            _clientId = Environment.GetEnvironmentVariable("ARM_API_CLIENTID");
+            _clientSecret = Environment.GetEnvironmentVariable("ARM_API_CLIENTSECRET");
 
             // App settings
-            var tenantId = ConfigurationManager.AppSettings["TenantId"];
+            _tenantId = ConfigurationManager.AppSettings["TenantId"];
             var baseUri = ConfigurationManager.AppSettings["RedirectBaseUri"];
-            var redirectUri = baseUri + "/api/auth/receivetoken";
-
-            _clientInfo = new ClientInfo(redirectUri,
-                                            clientId,
-                                            clientSecret,
-                                            tenantId);
+            _redirectUri = baseUri + "/api/auth/receivetoken";
         }
 
         public async Task<string> GetToken(object[] args)
@@ -50,7 +50,7 @@ namespace AzureBot.Services.Impl
                     var c = tokenUri.Query.Remove(0, 1);
                     var content = new StringContent(c);
                     content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
-                    var resp = await http.PostAsync(new Uri($"https://login.microsoftonline.com/{_clientInfo.TenantId}/oauth2/token"), content);
+                    var resp = await http.PostAsync(new Uri($"https://login.microsoftonline.com/{_tenantId}/oauth2/token"), content);
                     result = await resp.Content.ReadAsStringAsync();
                 }
 
@@ -69,12 +69,12 @@ namespace AzureBot.Services.Impl
         private Uri BuildOAuthCodeRequestUri(string userId)
         {
             UriBuilder uriBuilder =
-                new UriBuilder($"https://login.microsoftonline.com/{_clientInfo.TenantId}/oauth2/authorize");
+                new UriBuilder($"https://login.microsoftonline.com/{_tenantId}/oauth2/authorize");
 
             var query = new StringBuilder();
-            query.AppendFormat("redirect_uri={0}", Uri.EscapeUriString(_clientInfo.RedirectUri));
-            query.AppendFormat("&client_id={0}", Uri.EscapeUriString(_clientInfo.ClientId));
-            query.AppendFormat("&client_secret={0}", Uri.EscapeUriString(_clientInfo.ClientSecret));
+            query.AppendFormat("redirect_uri={0}", Uri.EscapeUriString(_redirectUri));
+            query.AppendFormat("&client_id={0}", Uri.EscapeUriString(_clientId));
+            query.AppendFormat("&client_secret={0}", Uri.EscapeUriString(_clientSecret));
             query.Append("&response_type=code");
 
             if (!string.IsNullOrEmpty(userId))
@@ -87,12 +87,12 @@ namespace AzureBot.Services.Impl
         private Uri BuildOAuthTokenRequestUri(string code, string refreshToken = "")
         {
             UriBuilder uriBuilder =
-                new UriBuilder($"https://login.microsoftonline.com/{_clientInfo.TenantId}/oauth2/token");
+                new UriBuilder($"https://login.microsoftonline.com/{_tenantId}/oauth2/token");
             var query = new StringBuilder();
 
-            query.AppendFormat("redirect_uri={0}", Uri.EscapeUriString(_clientInfo.RedirectUri));
-            query.AppendFormat("&client_id={0}", Uri.EscapeUriString(_clientInfo.ClientId));
-            query.AppendFormat("&client_secret={0}", Uri.EscapeUriString(_clientInfo.ClientSecret));
+            query.AppendFormat("redirect_uri={0}", Uri.EscapeUriString(_redirectUri));
+            query.AppendFormat("&client_id={0}", Uri.EscapeUriString(_clientId));
+            query.AppendFormat("&client_secret={0}", Uri.EscapeUriString(_clientSecret));
 
             string grant = "authorization_code";
 

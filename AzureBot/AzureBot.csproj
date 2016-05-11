@@ -135,7 +135,6 @@
     <Compile Include="Factories\IChatServiceFactory.cs" />
     <Compile Include="Services\Interfaces\IChatService.cs" />
     <Compile Include="Services\Interfaces\IAzureService.cs" />
-    <Compile Include="Model\ClientInfo.cs" />
     <Compile Include="Model\Intent.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Repositories\IUserRepository.cs" />

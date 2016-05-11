@@ -14,6 +14,7 @@ using AzureBot.Model;
 using AzureBot.Services;
 using System.Globalization;
 using AzureBot.Services.Interfaces;
+using AzureBot.Repos;
 
 namespace AzureBot.Controllers
 {
@@ -22,9 +23,11 @@ namespace AzureBot.Controllers
     {
         private const int MIN_MESSAGE_LENGTH = 1;
         private IAzureService _azure;
+        private IUserRepository _users;
 
-        public MessagesController(IAzureService azureService)
+        public MessagesController(IUserRepository users, IAzureService azureService)
         {
+            _users = users;
             _azure = azureService;
         }
 
@@ -142,17 +145,16 @@ namespace AzureBot.Controllers
             }
         }
 
-        private static User GetOrCreateUser(string id)
+        private User GetOrCreateUser(string id)
         {
-            var users = UserRepository.GetInstance();
-            User user = users.GetById(id);
+            User user = _users.GetById(id);
 
             // If the user doesn't exist
             if (user == null)
             {
                 // Create new users
                 user = new Model.User(id);
-                users.Add(user);
+                _users.Add(user);
             }
 
             return user;

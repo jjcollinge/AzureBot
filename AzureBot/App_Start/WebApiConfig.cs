@@ -30,16 +30,17 @@ namespace AzureBot
                 NullValueHandling = NullValueHandling.Ignore,
             };
 
-            // Web API configuration and services
+            // Environment variables
+
+            // App settings
             var apiVersion = ConfigurationManager.AppSettings["AzureAPIVersion"];
 
+            // Web API configuration and services
             var container = new UnityContainer();
-            container.RegisterInstance<IUserRepository>(UserRepository.GetInstance());
+            container.RegisterInstance<IUserRepository>(new UserRepository());
             container.RegisterType<IAuthenticationService, OAuthAuthenticationService>();
             container.RegisterType<IAzureService, AzureService>(new InjectionConstructor(apiVersion));
             config.DependencyResolver = new UnityResolver(container);
-
-            // Environment variables
 
             // Web API routes
             config.MapHttpAttributeRoutes();

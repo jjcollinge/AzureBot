@@ -10,21 +10,13 @@ namespace AzureBot
 {
     public class UserRepository : IUserRepository
     {
-        private static UserRepository _instance;
         IDictionary<string, User> _users;
 
-        private UserRepository()
+        public UserRepository()
         {
             _users = new Dictionary<string, User>();
         }
 
-        public static UserRepository GetInstance()
-        {
-            if (_instance == null)
-                _instance = new UserRepository();
-
-            return _instance;
-        }
 
         public void Add(User user)
         {

@@ -12,7 +12,7 @@ namespace AzureBot.UnitTests.Tests
         [TestMethod]
         public void TestClearingAllUsers()
         {
-            IUserRepository users = UserRepository.GetInstance();
+            IUserRepository users = new UserRepository();
 
             for (int i = 0; i < 10; i++)
             {
@@ -29,8 +29,7 @@ namespace AzureBot.UnitTests.Tests
         [TestMethod]
         public void TestAddingNewUser()
         {
-            IUserRepository users = UserRepository.GetInstance();
-            users.Clear();
+            IUserRepository users = new UserRepository();
 
             User newUser = new User("0");
             users.Add(newUser);
@@ -41,8 +40,7 @@ namespace AzureBot.UnitTests.Tests
         [TestMethod]
         public void TestRemovingExistingUser()
         {
-            IUserRepository users = UserRepository.GetInstance();
-            users.Clear();
+            IUserRepository users = new UserRepository();
 
             User newUser = new User("0");
             users.Add(newUser);
