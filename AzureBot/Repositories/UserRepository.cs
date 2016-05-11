@@ -8,7 +8,7 @@ using System.Web;
 
 namespace AzureBot
 {
-    internal class UserRepository : IUserRepository
+    public class UserRepository : IUserRepository
     {
         private static UserRepository _instance;
         IDictionary<string, User> _users;
