@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Clients.ActiveDirectory;
+﻿using AzureBot.Controllers;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,9 +15,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace AzureBot
+namespace AzureBot.Services
 {
-    public class AzureService
+    public class AzureService : IAzureService
     {
         private string _apiVersion;
 
@@ -25,7 +26,7 @@ namespace AzureBot
         public AzureService(string apiVersion)
         { _apiVersion = apiVersion; }
 
-        public async Task<Dictionary<string, string>> GetSubscriptions(string token)
+        public async Task<IDictionary<string, string>> GetSubscriptions(string token)
         {
             Dictionary<string, string> subscriptions = new Dictionary<string, string>();
 
@@ -56,11 +57,6 @@ namespace AzureBot
             }
 
             return subscriptions;
-        }
-
-        public Task<List<Resource>> GetAllResourcesAsync()
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<List<Resource>> GetResources(string token)

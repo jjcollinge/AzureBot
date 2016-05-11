@@ -1,4 +1,5 @@
-﻿using AzureBot.Model;
+﻿using AzureBot.Controllers;
+using AzureBot.Model;
 using AzureBot.Repos;
 using AzureBot.Services;
 using Microsoft.Practices.Unity;
@@ -28,9 +29,12 @@ namespace AzureBot
             };
 
             // Web API configuration and services
+            var apiVersion = "2015-01-01"; // TODO: Get from config
+
             var container = new UnityContainer();
             container.RegisterInstance<IUserRepository>(UserRepository.GetInstance());
             container.RegisterType<IAuthenticationService, OAuthAuthenticationService>();
+            container.RegisterType<IAzureService, AzureService>(new InjectionConstructor(apiVersion));
             config.DependencyResolver = new UnityResolver(container);
 
             // Environment variables

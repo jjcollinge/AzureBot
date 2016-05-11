@@ -20,12 +20,11 @@ namespace AzureBot.Controllers
     public class MessagesController : ApiController
     {
         private const int MIN_MESSAGE_LENGTH = 1;
-        private AzureService _azure;
+        private IAzureService _azure;
 
-        public MessagesController()
+        public MessagesController(IAzureService azureService)
         {
-            //TODO: Config driven
-            _azure = new AzureService("2015-01-01");
+            _azure = azureService;
         }
 
         /// <summary>

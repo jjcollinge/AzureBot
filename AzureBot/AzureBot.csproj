@@ -132,6 +132,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Services\IAzureService.cs" />
     <Compile Include="Model\ClientInfo.cs" />
     <Compile Include="Model\Intent.cs" />
     <Compile Include="Model\User.cs" />
