@@ -3,36 +3,19 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AzureBot.Controllers;
 using System.Net;
 using AzureBot.Services;
+using AzureBot.UnitTests.Mocks;
+using System.Web.Http.Hosting;
+using System.Net.Http;
+using System.Web.Http;
+using System.Threading.Tasks;
+using System.IO.Compression;
+using System.IO;
 
 namespace AzureBot.UnitTests
 {
     [TestClass]
     public class AuthTest
     {
-        [TestMethod]
-        public async void TestAuthFlowSuccess()
-        {
-            // Test for succesful authentication
-            var code = Environment.GetEnvironmentVariable("AZURE_AUTH_CODE");
-            var state = Environment.GetEnvironmentVariable("AZURE_AUTH_STATE");
-
-            //var clientInfo = new ClientInfo();
-            //var authService = new MockAuthService(clientInfo);
-            //var authController = new AuthController(authService);
-            //var res = controller.Home("1234");
-            //Assert.IsTrue(res.StatusCode == HttpStatusCode.OK);
-        }
-
-        [TestMethod]
-        public async void TestAuthFlowFail()
-        {
-            //TODO...
-        }
-
-        [TestMethod]
-        public async void TestAuthFlowNullValues()
-        {
-            //TODO...
-        }
+        //TODO: Test authentication flow
     }
 }

@@ -57,6 +57,8 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AuthTest.cs" />
+    <Compile Include="Mocks\MockAuthenticationService.cs" />
+    <Compile Include="Mocks\MockUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

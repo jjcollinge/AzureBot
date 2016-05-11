@@ -6,6 +6,8 @@
 
 web.config
 web.*.config
+app.config
+app.*.config
 
 # User-specific files
 *.suo

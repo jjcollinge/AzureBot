@@ -132,13 +132,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Services\IAzureService.cs" />
+    <Compile Include="Services\Interfaces\IAzureService.cs" />
     <Compile Include="Model\ClientInfo.cs" />
     <Compile Include="Model\Intent.cs" />
     <Compile Include="Model\User.cs" />
-    <Compile Include="Repos\IUserRepository.cs" />
-    <Compile Include="Services\OAuthAuthenticationService.cs" />
-    <Compile Include="Services\AzureService.cs" />
+    <Compile Include="Repositories\IUserRepository.cs" />
+    <Compile Include="Services\Impl\OAuthAuthenticationService.cs" />
+    <Compile Include="Services\Impl\AzureService.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -147,10 +147,10 @@
     <Compile Include="Exceptions\NotAuthenticatedException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\Resource.cs" />
-    <Compile Include="Repos\UserRepository.cs" />
+    <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="Model\VirtualMachine.cs" />
-    <Compile Include="Services\ChatService.cs" />
-    <Compile Include="Services\IAuthenticationService.cs" />
+    <Compile Include="Services\Impl\ChatService.cs" />
+    <Compile Include="Services\Interfaces\IAuthenticationService.cs" />
     <Compile Include="Services\UnityResolver.cs" />
   </ItemGroup>
   <ItemGroup>
