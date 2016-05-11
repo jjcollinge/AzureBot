@@ -61,22 +61,6 @@ namespace AzureBot.Controllers
             }
         }
 
-        private static User GetOrCreateUser(string id)
-        {
-            var users = UserRepository.GetInstance();
-            User user = users.GetById(id);
-
-            // If the user doesn't exist
-            if (user == null)
-            {
-                // Create new users
-                user = new Model.User(id);
-                users.Add(user);
-            }
-
-            return user;
-        }
-
         private async Task<string> HandleUserMessage(IChatService chat, Message message, User user)
         {
             StringBuilder response = new StringBuilder();
@@ -156,6 +140,22 @@ namespace AzureBot.Controllers
             {
                 return false;
             }
+        }
+
+        private static User GetOrCreateUser(string id)
+        {
+            var users = UserRepository.GetInstance();
+            User user = users.GetById(id);
+
+            // If the user doesn't exist
+            if (user == null)
+            {
+                // Create new users
+                user = new Model.User(id);
+                users.Add(user);
+            }
+
+            return user;
         }
 
         private Message HandleSystemMessage(Message message)
