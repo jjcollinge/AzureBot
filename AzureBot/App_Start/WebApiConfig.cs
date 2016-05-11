@@ -2,6 +2,8 @@
 using AzureBot.Model;
 using AzureBot.Repos;
 using AzureBot.Services;
+using AzureBot.Services.Impl;
+using AzureBot.Services.Interfaces;
 using Microsoft.Practices.Unity;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;

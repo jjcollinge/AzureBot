@@ -1,6 +1,7 @@
 ﻿using AzureBot.Model;
 using AzureBot.Repos;
 using AzureBot.Services;
+using AzureBot.Services.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.Configuration;

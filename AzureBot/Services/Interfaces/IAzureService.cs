@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace AzureBot.Services
+namespace AzureBot.Services.Interfaces
 {
     public interface IAzureService
     {

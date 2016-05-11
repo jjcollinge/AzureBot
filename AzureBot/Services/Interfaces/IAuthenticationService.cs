@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace AzureBot.Services
+namespace AzureBot.Services.Interfaces
 {
     public interface IAuthenticationService
     {

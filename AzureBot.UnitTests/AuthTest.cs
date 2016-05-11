@@ -16,6 +16,10 @@ namespace AzureBot.UnitTests
     [TestClass]
     public class AuthTest
     {
-        //TODO: Test authentication flow
+        [TestMethod]
+        public void TestAuthenticationURIGeneration()
+        {
+            //TODO...
+        }
     }
 }

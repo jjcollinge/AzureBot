@@ -1,4 +1,5 @@
 ﻿using AzureBot.Model;
+using AzureBot.Services.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace AzureBot.Services
+namespace AzureBot.Services.Impl
 {
     public class OAuthAuthenticationService : IAuthenticationService
     {

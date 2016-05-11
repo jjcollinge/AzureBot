@@ -1,4 +1,5 @@
 ﻿using AzureBot.Controllers;
+using AzureBot.Services.Interfaces;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Newtonsoft.Json;
 using System;
@@ -15,7 +16,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace AzureBot.Services
+namespace AzureBot.Services.Impl
 {
     public class AzureService : IAzureService
     {

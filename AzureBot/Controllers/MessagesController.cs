@@ -13,6 +13,7 @@ using System.Security;
 using AzureBot.Model;
 using AzureBot.Services;
 using System.Globalization;
+using AzureBot.Services.Interfaces;
 
 namespace AzureBot.Controllers
 {
@@ -33,9 +34,8 @@ namespace AzureBot.Controllers
         /// </summary>
         public async Task<Message> Post([FromBody]Message message)
         {
-            // Initialise a chat service to match the input 
-            var culture = new CultureInfo(message.Language);
-            var chat = new ChatService(culture);
+            // Initialise a chat service to match the input language
+            var chat = IChatServiceFactory.Create(message.Language);
 
             if (message.Type == "Message")
             {
@@ -77,7 +77,7 @@ namespace AzureBot.Controllers
             return user;
         }
 
-        private async Task<string> HandleUserMessage(ChatService chat, Message message, User user)
+        private async Task<string> HandleUserMessage(IChatService chat, Message message, User user)
         {
             StringBuilder response = new StringBuilder();
 
@@ -103,45 +103,13 @@ namespace AzureBot.Controllers
                     switch (intentRoot.intent)
                     {
                         case "GetSubscriptions":
-                            foreach (var sub in await _azure.GetSubscriptions(user.Token))
-                            {
-                                response.AppendLine($"**{sub.Key}:**  + {sub.Value}");
-                                response.AppendLine("               ");
-                            }
+                            response.Append(chat.RenderSubscriptionList(await _azure.GetSubscriptions(user.Token)));
                             break;
                         case "GetResources":
-                            foreach (var res in await _azure.GetResources(user.Token))
-                            {
-                                response.AppendLine($"**Name:** {res.Name}");
-                                response.AppendLine("               ");
-                                response.AppendLine($"**ResourceId:** {res.Id}");
-                                response.AppendLine("               ");
-                                response.AppendLine($"**ResourceType:** {res.Type}");
-                                response.AppendLine("               ");
-                                response.AppendLine($"**Location:** {res.Location}");
-                                response.AppendLine("               ");
-                                response.AppendLine($"**SubscriptionId:** {res.SubscriptionId}");
-                                response.AppendLine("               ");
-                                response.AppendLine("-_-_-_-_-_");
-                                response.AppendLine("               ");
-                            }
+                            response.Append(chat.RenderResourceList(await _azure.GetResources(user.Token)));
                             break;
                         case "GetResourceGroups":
-                            foreach (var res in await _azure.GetResourceGroups(user.Token))
-                            {
-                                response.AppendLine($"**Name:** {res.Name}");
-                                response.AppendLine("               ");
-                                response.AppendLine($"**ResourceId:** {res.Id}");
-                                response.AppendLine("               ");
-                                response.AppendLine($"**ResourceType:** {res.Type}");
-                                response.AppendLine("               ");
-                                response.AppendLine($"**Location:** {res.Location}");
-                                response.AppendLine("               ");
-                                response.AppendLine($"**SubscriptionId:** {res.SubscriptionId}");
-                                response.AppendLine("               ");
-                                response.AppendLine("-_-_-_-_-_");
-                                response.AppendLine("               ");
-                            }
+                            response.Append(chat.RenderResourceList(await _azure.GetResourceGroups(user.Token)));
                             break;
                         default:
                             response.AppendLine(chat.UnsupportedIntent());

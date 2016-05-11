@@ -132,6 +132,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Factories\IChatServiceFactory.cs" />
+    <Compile Include="Services\Interfaces\IChatService.cs" />
     <Compile Include="Services\Interfaces\IAzureService.cs" />
     <Compile Include="Model\ClientInfo.cs" />
     <Compile Include="Model\Intent.cs" />
@@ -149,9 +151,9 @@
     <Compile Include="Model\Resource.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="Model\VirtualMachine.cs" />
-    <Compile Include="Services\Impl\ChatService.cs" />
+    <Compile Include="Services\Impl\EnGBChatService.cs" />
     <Compile Include="Services\Interfaces\IAuthenticationService.cs" />
-    <Compile Include="Services\UnityResolver.cs" />
+    <Compile Include="Resolvers\UnityResolver.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
