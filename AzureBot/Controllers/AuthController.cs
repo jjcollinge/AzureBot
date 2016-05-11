@@ -42,11 +42,15 @@ namespace AzureBot.Controllers
             var token = await _authService.GetToken(new object[] {code, state});
 
             // Attempt to retrieve an existing user
-            var user = UserRepository.GetInstance().GetById(state);
+            var users = UserRepository.GetInstance();
+            var user = users.GetById(state);
 
             // Create user if one doesn't exist
             if (user == null)
+            {
                 user = new Model.User(state);
+                users.Add(user);
+            }
 
             // Assign token
             user.Token = token;
