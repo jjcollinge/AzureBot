@@ -10,13 +10,13 @@ using System.Web;
 
 namespace AzureBot.Services.Impl
 {
-    public class EnGBChatService : IChatService
+    public class EnglishChatService : IChatService
     {
         private CultureInfo _culture;
 
-        public EnGBChatService()
+        public EnglishChatService(string cultureName)
         {
-            _culture = new CultureInfo("en-GB");
+            _culture = new CultureInfo(cultureName);
         }
 
         public string PromptUserLogin(User user)

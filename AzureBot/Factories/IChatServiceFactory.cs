@@ -14,9 +14,9 @@ namespace AzureBot.Services
             switch (language)
             {
                 case "en":
-                    return new EnGBChatService();
+                    return new EnglishChatService("en-GB");
                 default:
-                    return new EnGBChatService();
+                    return new EnglishChatService("en-GB");
             }
         }
     }

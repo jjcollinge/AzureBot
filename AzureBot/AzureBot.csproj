@@ -151,7 +151,7 @@
     <Compile Include="Model\Resource.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="Model\VirtualMachine.cs" />
-    <Compile Include="Services\Impl\EnGBChatService.cs" />
+    <Compile Include="Services\Impl\EnglishChatService.cs" />
     <Compile Include="Services\Interfaces\IAuthenticationService.cs" />
     <Compile Include="Resolvers\UnityResolver.cs" />
   </ItemGroup>
