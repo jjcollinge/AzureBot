@@ -49,7 +49,6 @@ namespace AzureBot.UnitTests.Tests
 
             Assert.IsNull(users.GetById(newUser.Id));
         }
-
-        
+   
     }
 }
