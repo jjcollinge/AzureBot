@@ -133,6 +133,7 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Factories\IChatServiceFactory.cs" />
+    <Compile Include="Services\Impl\LUISIntentService.cs" />
     <Compile Include="Services\Interfaces\IChatService.cs" />
     <Compile Include="Services\Interfaces\IAzureService.cs" />
     <Compile Include="Model\Intent.cs" />
@@ -153,6 +154,7 @@
     <Compile Include="Services\Impl\EnglishChatService.cs" />
     <Compile Include="Services\Interfaces\IAuthenticationService.cs" />
     <Compile Include="Resolvers\UnityResolver.cs" />
+    <Compile Include="Services\Interfaces\IIntentService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

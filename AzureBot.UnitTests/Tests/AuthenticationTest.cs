@@ -14,7 +14,7 @@ using System.IO;
 namespace AzureBot.UnitTests
 {
     [TestClass]
-    public class AuthTest
+    public class AuthenticationTest
     {
         [TestMethod]
         public void TestAuthenticationURIGeneration()

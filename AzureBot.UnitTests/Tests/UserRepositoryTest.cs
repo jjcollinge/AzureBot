@@ -48,7 +48,6 @@ namespace AzureBot.UnitTests.Tests
             users.Remove(newUser.Id);
 
             Assert.IsNull(users.GetById(newUser.Id));
-        }
-   
+        }   
     }
 }

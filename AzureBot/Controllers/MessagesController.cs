@@ -21,14 +21,18 @@ namespace AzureBot.Controllers
     [BotAuthentication]
     public class MessagesController : ApiController
     {
+        //TODO: Add user resource caching
+
         private const int MIN_MESSAGE_LENGTH = 1;
         private IAzureService _azure;
         private IUserRepository _users;
+        private IIntentService _intentService;
 
-        public MessagesController(IUserRepository users, IAzureService azureService)
+        public MessagesController(IUserRepository users, IAzureService azureService, IIntentService intentService)
         {
             _users = users;
             _azure = azureService;
+            _intentService = intentService;
         }
 
         /// <summary>
@@ -85,9 +89,9 @@ namespace AzureBot.Controllers
                     // Implement all other chat logic here...
                     string inputText = Uri.EscapeDataString(message.Text);
 
-                    IntentRoot intentRoot = await GetIntent(inputText);
+                    string intent = await _intentService.GetIntentAsync(inputText);
 
-                    switch (intentRoot.intent)
+                    switch (intent)
                     {
                         case "GetSubscriptions":
                             response.Append(chat.RenderSubscriptionList(await _azure.GetSubscriptions(user.Token)));
@@ -106,31 +110,7 @@ namespace AzureBot.Controllers
             }
 
             return response.ToString();
-        }
-
-        private async Task<IntentRoot> GetIntent(string inputText)
-        {
-            IntentRoot intent = new IntentRoot();
-
-            using (var http = new HttpClient())
-            {
-                string key = Environment.GetEnvironmentVariable("AZUREBOT_LUIS_API_KEY");
-                string id = Environment.GetEnvironmentVariable("AZUREBOT_LUIS_API_ID");
-                string uri = $"https://api.projectoxford.ai/luis/v1/application?id={id}&subscription-key={key}&q={inputText}";
-                var res = await http.GetAsync(uri);
-                res.EnsureSuccessStatusCode();
-
-                var strRes = await res.Content.ReadAsStringAsync();
-                var data = JsonConvert.DeserializeObject<dynamic>(strRes);
-
-                // Get top intent
-                intent.intent = data.intents[0].intent;
-                intent.score = data.intents[0].score;
-                intent.actions = data.intents[0].actions;
-            }
-
-            return intent;
-        }
+        }  
 
         private static bool ValidateMessage(Message message)
         {
