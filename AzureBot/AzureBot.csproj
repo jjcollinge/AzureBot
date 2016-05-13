@@ -139,7 +139,7 @@
     <Compile Include="Model\User.cs" />
     <Compile Include="Repositories\IUserRepository.cs" />
     <Compile Include="Services\Impl\OAuthAuthenticationService.cs" />
-    <Compile Include="Services\Impl\AzureService.cs" />
+    <Compile Include="Services\Impl\RESTAzureService.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Global.asax.cs">
