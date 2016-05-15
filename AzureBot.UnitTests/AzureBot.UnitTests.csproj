@@ -95,6 +95,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\MessageControllerTest.cs" />
     <Compile Include="Tests\UserRepositoryTest.cs" />
+    <Compile Include="Tests\ValidationTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AzureBot\AzureBot.csproj">

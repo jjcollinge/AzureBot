@@ -10,13 +10,19 @@ namespace AzureBot.Services.Impl
 {
     public class ValidationService : IValidationService
     {
-        private const int MIN_MESSAGE_LENGTH = 1;
-        private const int MAX_MESSAGE_LENGTH = 500;
+        private int MIN_MESSAGE_LENGTH;
+        private int MAX_MESSAGE_LENGTH;
+
+        public ValidationService(int minMessageTextSize = 1, int maxMessageTextSize = 500)
+        {
+            MIN_MESSAGE_LENGTH = minMessageTextSize;
+            MAX_MESSAGE_LENGTH = maxMessageTextSize;
+        }
 
         public Task<bool> IsValidMessage(Message message)
         {
             var messageText = message.Text;
-            var isValid = false;
+            var isValid = true;
 
             if(messageText.Length >= MAX_MESSAGE_LENGTH)
             {
