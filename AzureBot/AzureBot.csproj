@@ -133,18 +133,19 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Factories\IChatServiceFactory.cs" />
-    <Compile Include="Services\Impl\ConsoleLogger.cs" />
-    <Compile Include="Services\Impl\DebugLogger.cs" />
-    <Compile Include="Services\Impl\StringLoggerService.cs" />
-    <Compile Include="Services\Impl\LUISIntentService.cs" />
-    <Compile Include="Services\Impl\ValidationService.cs" />
-    <Compile Include="Services\Interfaces\IChatService.cs" />
-    <Compile Include="Services\Interfaces\IAzureService.cs" />
+    <Compile Include="Services\Logging\ConsoleLogger.cs" />
+    <Compile Include="Services\Logging\DebugLogger.cs" />
+    <Compile Include="Services\Logging\FileLogger.cs" />
+    <Compile Include="Services\Logging\StringLoggerService.cs" />
+    <Compile Include="Services\Intent\LUISIntentService.cs" />
+    <Compile Include="Services\Validation\ValidationService.cs" />
+    <Compile Include="Services\Chat\IChatService.cs" />
+    <Compile Include="Services\Azure\IAzureService.cs" />
     <Compile Include="Model\Intent.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Repositories\IUserRepository.cs" />
-    <Compile Include="Services\Impl\OAuthAuthenticationService.cs" />
-    <Compile Include="Services\Impl\RESTAzureService.cs" />
+    <Compile Include="Services\Authentication\OAuthAuthenticationService.cs" />
+    <Compile Include="Services\Azure\RESTAzureService.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -155,13 +156,13 @@
     <Compile Include="Model\Resource.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="Model\VirtualMachine.cs" />
-    <Compile Include="Services\Impl\EnglishChatService.cs" />
-    <Compile Include="Services\Interfaces\IAuthenticationService.cs" />
+    <Compile Include="Services\Chat\EnglishChatService.cs" />
+    <Compile Include="Services\Authentication\IAuthenticationService.cs" />
     <Compile Include="Resolvers\UnityResolver.cs" />
-    <Compile Include="Services\Interfaces\IIntentService.cs" />
-    <Compile Include="Services\Interfaces\IStringLogger.cs" />
-    <Compile Include="Services\Interfaces\ILoggerService.cs" />
-    <Compile Include="Services\Interfaces\IValidationService.cs" />
+    <Compile Include="Services\Intent\IIntentService.cs" />
+    <Compile Include="Services\Logging\IStringLogger.cs" />
+    <Compile Include="Services\Logging\ILoggerService.cs" />
+    <Compile Include="Services\Validation\IValidationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

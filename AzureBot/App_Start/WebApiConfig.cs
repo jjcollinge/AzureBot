@@ -4,6 +4,7 @@ using AzureBot.Repos;
 using AzureBot.Services;
 using AzureBot.Services.Impl;
 using AzureBot.Services.Interfaces;
+using AzureBot.Services.Logging;
 using Microsoft.Practices.Unity;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -32,6 +33,7 @@ namespace AzureBot
             };
 
             // Environment variables
+            // TODO: Read logging folder location from env val
 
             // App settings
             var apiVersion = ConfigurationManager.AppSettings["AzureAPIVersion"];
@@ -43,7 +45,7 @@ namespace AzureBot
             container.RegisterType<IAzureService, RESTAzureService>(new InjectionConstructor(apiVersion));
             container.RegisterType<IIntentService, LUISIntentService>();
             container.RegisterType<IValidationService, ValidationService>(new InjectionConstructor(1, 500));
-            container.RegisterType<IStringLogger, DebugLogger>();
+            container.RegisterType<IStringLogger, FileLogger>(new InjectionConstructor("\\src\\temp\\test.log"));
             container.RegisterType<ILoggerService, StringLoggerService>();
             config.DependencyResolver = new UnityResolver(container);
 
