@@ -8,6 +8,7 @@ using Microsoft.Practices.Unity;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -42,7 +43,8 @@ namespace AzureBot
             container.RegisterType<IAzureService, RESTAzureService>(new InjectionConstructor(apiVersion));
             container.RegisterType<IIntentService, LUISIntentService>();
             container.RegisterType<IValidationService, ValidationService>(new InjectionConstructor(1, 500));
-            container.RegisterType<ILogger, ConsoleLogger>();
+            container.RegisterType<IStringLogger, DebugLogger>();
+            container.RegisterType<ILoggerService, StringLoggerService>();
             config.DependencyResolver = new UnityResolver(container);
 
             // Web API routes

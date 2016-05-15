@@ -134,6 +134,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Factories\IChatServiceFactory.cs" />
     <Compile Include="Services\Impl\ConsoleLogger.cs" />
+    <Compile Include="Services\Impl\DebugLogger.cs" />
+    <Compile Include="Services\Impl\StringLoggerService.cs" />
     <Compile Include="Services\Impl\LUISIntentService.cs" />
     <Compile Include="Services\Impl\ValidationService.cs" />
     <Compile Include="Services\Interfaces\IChatService.cs" />
@@ -157,7 +159,8 @@
     <Compile Include="Services\Interfaces\IAuthenticationService.cs" />
     <Compile Include="Resolvers\UnityResolver.cs" />
     <Compile Include="Services\Interfaces\IIntentService.cs" />
-    <Compile Include="Services\Interfaces\ILogger.cs" />
+    <Compile Include="Services\Interfaces\IStringLogger.cs" />
+    <Compile Include="Services\Interfaces\ILoggerService.cs" />
     <Compile Include="Services\Interfaces\IValidationService.cs" />
   </ItemGroup>
   <ItemGroup>

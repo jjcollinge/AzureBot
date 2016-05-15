@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AzureBot.UnitTests.Mocks
 {
-    class MockLogger : ILogger
+    class MockLogger : ILoggerService
     {
         public void LogError(string logMessage)
         {

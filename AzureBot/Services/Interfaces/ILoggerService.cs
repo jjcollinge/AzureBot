@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AzureBot.Services.Interfaces
 {
-    public interface ILogger
+    public interface ILoggerService
     {
         void LogVerbose(string logMessage);
         void LogInfo(string logMessage);

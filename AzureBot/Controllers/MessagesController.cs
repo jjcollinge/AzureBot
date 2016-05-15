@@ -27,13 +27,13 @@ namespace AzureBot.Controllers
         private IUserRepository _users;
         private IIntentService _intentService;
         private IValidationService _validationService;
-        private ILogger _logger;
+        private ILoggerService _logger;
 
         public MessagesController(IUserRepository users,
                                   IAzureService azureService,
                                   IIntentService intentService,
                                   IValidationService validationService,
-                                  ILogger logger)
+                                  ILoggerService logger)
         {
             _users = users;
             _azure = azureService;
