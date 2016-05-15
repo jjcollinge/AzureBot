@@ -86,7 +86,7 @@ namespace AzureBot.Controllers
                 // User is logged in...
 
                 // Check message is valid
-                if (!await _validationService.IsValidMessage(message))
+                if (!(await _validationService.IsValidMessage(message)))
                 {
                     response.AppendLine(chat.InvalidMessage());
                 }

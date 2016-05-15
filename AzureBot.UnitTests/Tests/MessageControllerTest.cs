@@ -21,6 +21,7 @@ namespace AzureBot.UnitTests.Tests
         {
             _intentService = new MockIntentService();
             _azureService = new MockAzureService();
+            _validationService = new MockValidationService();
             InitialiseTestData(_azureService);
         }
 
