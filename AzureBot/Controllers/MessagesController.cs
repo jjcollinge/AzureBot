@@ -23,16 +23,20 @@ namespace AzureBot.Controllers
     {
         //TODO: Add user resource caching
 
-        private const int MIN_MESSAGE_LENGTH = 1;
         private IAzureService _azure;
         private IUserRepository _users;
         private IIntentService _intentService;
+        private IValidationService _validationService;
 
-        public MessagesController(IUserRepository users, IAzureService azureService, IIntentService intentService)
+        public MessagesController(IUserRepository users,
+                                  IAzureService azureService,
+                                  IIntentService intentService,
+                                  IValidationService validationService)
         {
             _users = users;
             _azure = azureService;
             _intentService = intentService;
+            _validationService = validationService;
         }
 
         /// <summary>
@@ -80,7 +84,9 @@ namespace AzureBot.Controllers
             else
             {
                 // User is logged in...
-                if (!ValidateMessage(message))
+
+                // Check message is valid
+                if (!await _validationService.IsValidMessage(message))
                 {
                     response.AppendLine(chat.InvalidMessage());
                 }
@@ -111,19 +117,6 @@ namespace AzureBot.Controllers
 
             return response.ToString();
         }  
-
-        private static bool ValidateMessage(Message message)
-        {
-            // Ensure message of adequate length
-            if (message.Text.Length > MIN_MESSAGE_LENGTH)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
 
         private User GetOrCreateUser(string id)
         {

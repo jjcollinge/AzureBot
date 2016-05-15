@@ -41,6 +41,7 @@ namespace AzureBot
             container.RegisterType<IAuthenticationService, OAuthAuthenticationService>();
             container.RegisterType<IAzureService, RESTAzureService>(new InjectionConstructor(apiVersion));
             container.RegisterType<IIntentService, LUISIntentService>();
+            container.RegisterType<IValidationService, ValidationService>();
             config.DependencyResolver = new UnityResolver(container);
 
             // Web API routes

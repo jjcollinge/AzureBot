@@ -15,6 +15,7 @@ namespace AzureBot.UnitTests.Tests
     {
         private MockAzureService _azureService;
         private MockIntentService _intentService;
+        private MockValidationService _validationService;
 
         public MessagesControllerTest()
         {
@@ -27,7 +28,7 @@ namespace AzureBot.UnitTests.Tests
         public async Task TestMessageWithNoUserId()
         {
             var userRepo = new UserRepository();
-            var controller = new MessagesController(userRepo, _azureService, _intentService);
+            var controller = new MessagesController(userRepo, _azureService, _intentService, _validationService);
 
             var message = new Message()
             {
@@ -50,7 +51,7 @@ namespace AzureBot.UnitTests.Tests
         {
             var userRepo = new UserRepository();
             var azureService = new MockAzureService();
-            var controller = new MessagesController(userRepo, _azureService, _intentService);
+            var controller = new MessagesController(userRepo, _azureService, _intentService, _validationService);
 
             var testUserName = "TestUser";
             var testUserId = "0";
@@ -91,7 +92,7 @@ namespace AzureBot.UnitTests.Tests
             var userRepo = new UserRepository();
             userRepo.Add(user);
             
-            var controller = new MessagesController(userRepo, _azureService, _intentService);
+            var controller = new MessagesController(userRepo, _azureService, _intentService, _validationService);
 
             var message = new Message()
             {
@@ -127,7 +128,7 @@ namespace AzureBot.UnitTests.Tests
             var userRepo = new UserRepository();
             userRepo.Add(user);
 
-            var controller = new MessagesController(userRepo, _azureService, _intentService);
+            var controller = new MessagesController(userRepo, _azureService, _intentService, _validationService);
 
             var message = new Message()
             {
@@ -164,7 +165,7 @@ namespace AzureBot.UnitTests.Tests
             var userRepo = new UserRepository();
             userRepo.Add(user);
 
-            var controller = new MessagesController(userRepo, _azureService, _intentService);
+            var controller = new MessagesController(userRepo, _azureService, _intentService, _validationService);
 
             var message = new Message()
             {
@@ -201,7 +202,7 @@ namespace AzureBot.UnitTests.Tests
             var userRepo = new UserRepository();
             userRepo.Add(user);
 
-            var controller = new MessagesController(userRepo, _azureService, _intentService);
+            var controller = new MessagesController(userRepo, _azureService, _intentService, _validationService);
 
             var message = new Message()
             {
