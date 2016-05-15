@@ -27,16 +27,19 @@ namespace AzureBot.Controllers
         private IUserRepository _users;
         private IIntentService _intentService;
         private IValidationService _validationService;
+        private ILogger _logger;
 
         public MessagesController(IUserRepository users,
                                   IAzureService azureService,
                                   IIntentService intentService,
-                                  IValidationService validationService)
+                                  IValidationService validationService,
+                                  ILogger logger)
         {
             _users = users;
             _azure = azureService;
             _intentService = intentService;
             _validationService = validationService;
+            _logger = logger;
         }
 
         /// <summary>
@@ -45,12 +48,16 @@ namespace AzureBot.Controllers
         /// </summary>
         public async Task<Message> Post([FromBody]Message message)
         {
+            _logger.LogVerbose("New message received.");
+
             // Initialise a chat service to match the input language
             var chat = IChatServiceFactory.Create(message.Language);
 
             if (message.Type == "Message")
             {
                 var id = message?.From?.Id;
+
+                _logger.LogInfo($"New message Id: {id}");
 
                 // Check message has sender Id
                 if (string.IsNullOrEmpty(id))
@@ -80,6 +87,7 @@ namespace AzureBot.Controllers
             if (String.IsNullOrEmpty(user.Token))
             {
                 response.AppendLine(chat.PromptUserLogin(user));
+                _logger.LogInfo($"User with id [{user.Id}] is not logged in");
             }
             else
             {
@@ -89,6 +97,7 @@ namespace AzureBot.Controllers
                 if (!(await _validationService.IsValidMessage(message)))
                 {
                     response.AppendLine(chat.InvalidMessage());
+                    _logger.LogInfo($"User with id [{user.Id}] sent an invalid message");
                 }
                 else
                 {
@@ -101,15 +110,19 @@ namespace AzureBot.Controllers
                     {
                         case "GetSubscriptions":
                             response.Append(chat.RenderSubscriptionList(await _azure.GetSubscriptions(user.Token)));
+                            _logger.LogInfo($"User with id [{user.Id}] requested their subscriptions");
                             break;
                         case "GetResources":
                             response.Append(chat.RenderResourceList(await _azure.GetResources(user.Token)));
+                            _logger.LogInfo($"User with id [{user.Id}] requested their resources");
                             break;
                         case "GetResourceGroups":
                             response.Append(chat.RenderResourceList(await _azure.GetResourceGroups(user.Token)));
+                            _logger.LogInfo($"User with id [{user.Id}] requested their resource groups");
                             break;
                         default:
                             response.AppendLine(chat.UnsupportedIntent());
+                            _logger.LogInfo($"User with id [{user.Id}] requested an unsupported intent");
                             break;
                     }
                 }
@@ -128,6 +141,12 @@ namespace AzureBot.Controllers
                 // Create new users
                 user = new Model.User(id);
                 _users.Add(user);
+
+                _logger.LogInfo($"Created new user");
+            }
+            else
+            {
+                _logger.LogInfo($"Existing user {user.Name}");
             }
 
             return user;
@@ -145,21 +164,27 @@ namespace AzureBot.Controllers
             {
                 // Implement user deletion here
                 // If we handle user deletion, return a real message
+                _logger.LogVerbose($"Delete user data request");
             }
             else if (message.Type == "BotAddedToConversation")
             {
+                _logger.LogVerbose($"Bot added to conversation");
             }
             else if (message.Type == "BotRemovedFromConversation")
             {
+                _logger.LogVerbose($"Bot removed from conversation");
             }
             else if (message.Type == "UserAddedToConversation")
             {
+                _logger.LogVerbose($"User added to conversation");
             }
             else if (message.Type == "UserRemovedFromConversation")
             {
+                _logger.LogVerbose($"User removed from conversation");
             }
             else if (message.Type == "EndOfConversation")
             {
+                _logger.LogVerbose($"Conversation has ended");
             }
 
             return null;

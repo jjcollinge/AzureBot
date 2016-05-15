@@ -88,6 +88,7 @@
   <ItemGroup>
     <Compile Include="Mocks\MockAzureService.cs" />
     <Compile Include="Mocks\MockIntentService.cs" />
+    <Compile Include="Mocks\MockLogger.cs" />
     <Compile Include="Mocks\MockValidationService.cs" />
     <Compile Include="Tests\AuthenticationTest.cs" />
     <Compile Include="Mocks\MockAuthenticationService.cs" />

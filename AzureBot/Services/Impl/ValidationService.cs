@@ -13,7 +13,13 @@ namespace AzureBot.Services.Impl
         private int MIN_MESSAGE_LENGTH;
         private int MAX_MESSAGE_LENGTH;
 
-        public ValidationService(int minMessageTextSize = 1, int maxMessageTextSize = 500)
+        public ValidationService()
+        {
+            MIN_MESSAGE_LENGTH = 1;
+            MAX_MESSAGE_LENGTH = 500;
+        }
+
+        public ValidationService(int minMessageTextSize, int maxMessageTextSize)
         {
             MIN_MESSAGE_LENGTH = minMessageTextSize;
             MAX_MESSAGE_LENGTH = maxMessageTextSize;
